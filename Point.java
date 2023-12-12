@@ -2,21 +2,19 @@
 public class Point
 {
 	private double[] point = new double[2];		// represents x,y coordinates
-	float theta = 0;							// angle between the x-axis (y=0) and the hypotenuse
+	private float theta = 0;							// angle between the x-axis (y=0) and the hypotenuse
 	
-    // Constructor to set initial coordinates
+    //constructor to set initial coordinates
     public Point(double x, double y) {
         setCoordinates(x, y);
-        calculateDirection();
     }
     
-    // No-arg Constructor, sets point to the origin
+    //no-arg Constructor, sets point to the origin
     public Point() {
         setCoordinates(0, 0);
-        calculateDirection();
     }
     
-    // Copy constructor
+    //copy constructor
     public Point(Point other) {
     	point[0] = other.getX();
     	point[1] = other.getY();
@@ -36,7 +34,7 @@ public class Point
     		return theta;
     	}
     	
-    	// find the angle in radians
+    	// find the angle in radians, update value for theta
         theta = (float) Math.atan2(getX(), getY());
 
         return theta;
@@ -54,13 +52,17 @@ public class Point
         double dx = getX() - other.getX();
         double dy = getY() - other.getY();
         
-        // find the angle in radians
+        //find the angle in radians
         theta = (float) Math.atan2(dy, dx);
 
         return theta;
     }
 
-    // Calculate distance between two coordinates
+    /**
+     * Calculates distance from the origin by using pythag. theorem
+     * @param other
+     * @return double representing distance
+     */
     public double calculateDistance(Point other) {
     	
         double dx = getX() - other.getX();
@@ -69,8 +71,20 @@ public class Point
         
         return distance;
     }
+    
+    /**
+     * Calculates distance from the origin by using pythag. theorem
+     * @return double representing distance
+     */
+    public double calculateDistance() { 	
+    	double dx = point[0];
+        double dy = point[1];
+        double distance = Math.sqrt((dx * dx) + (dy * dy)); 
+        
+        return distance;
+    }
       
-    // Move the coordinates by a specified delta
+    //move the coordinates by a specified delta
     public void move(double deltaX, double deltaY) {
         point[0] += deltaX;
         point[1] += deltaY;
@@ -78,7 +92,7 @@ public class Point
         calculateDirection();
     }
     
-    // Add method, just for readability.
+    //'Add' method, just for readability.  identical to 'move'.
     public void add(double deltaX, double deltaY) {
         point[0] += deltaX;
         point[1] += deltaY;
@@ -86,7 +100,7 @@ public class Point
         calculateDirection();
     }
     
-    // move a Point object by specified delta without creating new object
+    //move a Point object by specified delta without creating new object
     public void translate(double deltaX, double deltaY) {
         move(deltaX, deltaY);
         
@@ -158,6 +172,7 @@ public class Point
     
     /**
      * @return true if two coordinates are the same reference, or they have the same x,y location
+     * created with help from ChatGPT
      */
     @Override 
     public boolean equals(Object obj) {
@@ -180,26 +195,13 @@ public class Point
     	    return getX() == other.getX() && getY() == other.getY();
     }
 
-    // Displays x,y coordinates as a string
+    //displays x,y coordinates as a string
     @Override
     public String toString() {
     	String s = new String("(" + point[0] + ", " + point[1] + ")");
         return s;
     }
 
-    // Example usage
-    public static void main(String[] args) {
-        Point coords = new Point(3.0, 4.0);
-        System.out.println("Initial coordinates: " + coords);
-
-        coords.move(1.5, -2.0);
-        System.out.println("Coordinates after moving: " + coords);
-
-        double x = coords.getX();
-        double y = coords.getY();
-        System.out.println("X coordinate: " + x);
-        System.out.println("Y coordinate: " + y);
-    }
 }
 
 

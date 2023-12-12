@@ -2,12 +2,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-public class Vector extends Point {
+public class Vector {
 
 	    private double[][] vector = new double[2][2];
 	    
 	    double magnitude;	//length of the vector
 	    float theta;		//angle of the vector
+	    Point point;		//a vector has-a point (or rather, a location)
 
 	    //constructs vector at the origin
 	    public Vector(Point head) {
@@ -29,8 +30,8 @@ public class Vector extends Point {
 	    //constructs vector at the origin using magnitude and angle (in radians)
 	    public Vector(double magnitude, float theta) {
 	
-	    	this.magnitude = magnitude;
-	    	this.theta = theta;
+	    	calculateMagnitude();
+	        calculateDirection();
 	    	
 	    	vector = new double[][] {{0,0},										//tx, ty
 	    		{magnitude * Math.cos(theta),magnitude * Math.sin(theta)}};  	//hx, hy
@@ -45,9 +46,8 @@ public class Vector extends Point {
 	        calculateDirection();
 	    }
 	    
-	    // Constructor to initialize the vector with tail and head coordinates
+	    //constructor to initialize the vector with tail and head coordinates
 	    public Vector(Point tail, Point head) {
-	    	super(tail.getX(), tail.getY());
 	    	
 	        this.vector = new double[][] {{tail.getX(),tail.getY()},
 	        						{head.getX(), head.getY()}};
@@ -79,20 +79,19 @@ public class Vector extends Point {
 	     * Updates value of theta
 	     * @return theta in radians
 	     */
-	    @Override
 	    public float calculateDirection() {
 	    	
 	        double dx = vector[1][0] - vector[0][0];
 	        double dy = vector[1][1] - vector[0][1];
 
-	        // Handle division by zero or zero vector case
+	        //handle division by zero or zero vector case
 	        if (calculateMagnitude() == 0) {
-	            //throw new ArithmeticException("Cannot calculate direction for a zero vector.");
+	            System.out.println("Detected direction of 0");
 	        	theta = 0;
 	        	return theta;
 	        }
 
-	        // Calculate the angle in radians
+	        //calculate the angle in radians
 	        theta = (float) Math.atan2(dy, dx);
 	        
 	        return theta;
@@ -217,14 +216,6 @@ public class Vector extends Point {
 	    	return new Vector(newTailX, newTailY, newHeadX, newHeadY);
 	    }
 	    
-	    //getters and setters
-	    //vector[0] represents the tail
-	    //vector[0][0] represents tx
-	    //vector[0][1] represents ty
-	    //vector[1] represents the head
-	    //vector[1][0] represents hx
-	    //vector[1][1] represents hy
-    
 	    /**
 	     * uses trig and magnitude value to find X
 	     * @return the length of the vector along the x-axis
